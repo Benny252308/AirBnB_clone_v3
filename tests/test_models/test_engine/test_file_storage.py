@@ -113,3 +113,33 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+        import unittest
+from models.engine.file_storage import FileStorage
+from models import MyObject, MyOtherObject
+
+
+class TestFileStorage(unittest.TestCase):
+    def setUp(self):
+        # Set up the necessary environment for testing FileStorage
+        self.file_storage = FileStorage()
+        # Additional setup code if needed
+
+    def tearDown(self):
+        # Clean up the environment after testing FileStorage
+        # Additional cleanup code if needed
+        pass
+
+    def test_get_existing_object(self):
+        # Create a test object and save it to the storage
+        obj = MyObject(id="1", name="Test Object")
+        self.file_storage.save(obj)
+
+        # Retrieve the object using the get method
+        retrieved_obj = self.file_storage.get(MyObject, "1")
+
+        # Check if the retrieved object is the same as the original object
+        self.assertEqual(obj, retrieved_obj)
+
+    def test
+

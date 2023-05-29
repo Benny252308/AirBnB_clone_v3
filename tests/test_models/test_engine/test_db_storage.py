@@ -86,3 +86,72 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+import unittest
+from models.engine.db_storage import DBStorage
+from models import MyObject, MyOtherObject
+
+
+class TestDBStorage(unittest.TestCase):
+    def setUp(self):
+        # Set up the necessary environment for testing DBStorage
+        self.db_storage = DBStorage()
+        # Additional setup code if needed
+
+    def tearDown(self):
+        # Clean up the environment after testing DBStorage
+        # Additional cleanup code if needed
+        pass
+
+    def test_get_existing_object(self):
+        # Create a test object and save it to the storage
+        obj = MyObject(id="1", name="Test Object")
+        self.db_storage.save(obj)
+
+        # Retrieve the object using the get method
+        retrieved_obj = self.db_storage.get(MyObject, "1")
+
+        # Check if the retrieved object is the same as the original object
+        self.assertEqual(obj, retrieved_obj)
+
+    def test_get_nonexistent_object(self):
+        # Retrieve a nonexistent object using the get method
+        retrieved_obj = self.db_storage.get(MyObject, "nonexistent")
+
+        # Check if the retrieved object is None
+        self.assertIsNone(retrieved_obj)
+
+    def test_count_all_objects(self):
+        # Create multiple test objects and save them to the storage
+        obj1 = MyObject(id="1", name="Test Object 1")
+        obj2 = MyObject(id="2", name="Test Object 2")
+        obj3 = MyObject(id="3", name="Test Object 3")
+        self.db_storage.save(obj1)
+        self.db_storage.save(obj2)
+        self.db_storage.save(obj3)
+
+        # Count all objects in the storage
+        count = self.db_storage.count()
+
+        # Check if the count is equal to the number of test objects
+        self.assertEqual(count, 3)
+
+    def test_count_objects_of_specific_class(self):
+        # Create multiple test objects of a specific class and save them to the storage
+        obj1 = MyObject(id="1", name="Test Object 1")
+        obj2 = MyObject(id="2", name="Test Object 2")
+        obj3 = MyOtherObject(id="3", name="Test Object 3")
+        self.db_storage.save(obj1)
+        self.db_storage.save(obj2)
+        self.db_storage.save(obj3)
+
+        # Count objects of the specific class in the storage
+        count = self.db_storage.count(MyObject)
+
+        # Check if the count is equal to the number of test objects of that class
+        self.assertEqual(count, 2)
+
+
+if __name__ == '__main__':
+    unittest.main()
+
